@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HR Attrition Prediction</title>
+    <style>
+        body {
+            background-color: hsl(34, 56%, 48%);
+            font-family: Arial, sans-serif;
+        }
+
+        .login {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background-color: rgb(104, 221, 230);
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(85, 179, 205, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .form-column {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .mb-3 {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .btn-container {
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #b76807;
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #e6830f;
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <h1>HR Attrition Predictor</h1>
+        <form action="{{ url_for('predict') }}" method="post">
+    <!-- Left Column -->
+    <div class="form-column">
+        <div class="mb-3">
+            <label class="form-label">Age</label>
+            <input class="form-control" type="number" name="Age" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Business Travel</label>
+            <select class="form-control" name="BusinessTravel" required>
+                <option disabled selected value="">Select Option</option>
+                <option value="Non-Travel">Non-Travel</option>
+                <option value="Travel_Rarely">Travel Rarely</option>
+                <option value="Travel_Frequently">Travel Frequently</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Daily Rate</label>
+            <input class="form-control" type="number" name="DailyRate" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Department</label>
+            <select class="form-control" name="Department" required>
+                <option disabled selected value="">Select Department</option>
+                <option value="Sales">Sales</option>
+                <option value="Research & Development">Research & Development</option>
+                <option value="Human Resources">Human Resources</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Distance From Home</label>
+            <input class="form-control" type="number" name="DistanceFromHome" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Education Level (1–5)</label>
+            <input class="form-control" type="number" name="Education" min="1" max="5" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Education Field</label>
+            <select class="form-control" name="EducationField" required>
+                <option disabled selected value="">Select Field</option>
+                <option value="Life Sciences">Life Sciences</option>
+                <option value="Medical">Medical</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Technical Degree">Technical Degree</option>
+                <option value="Other">Other</option>
+                <option value="Human Resources">Human Resources</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Employee Count</label>
+            <input class="form-control" type="number" name="EmployeeCount" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Employee Number</label>
+            <input class="form-control" type="number" name="EmployeeNumber" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Environment Satisfaction (1–4)</label>
+            <input class="form-control" type="number" name="EnvironmentSatisfaction" min="1" max="4" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Gender</label>
+            <select class="form-control" name="Gender" required>
+                <option disabled selected value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Hourly Rate</label>
+            <input class="form-control" type="number" name="HourlyRate" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Job Involvement (1–4)</label>
+            <input class="form-control" type="number" name="JobInvolvement" min="1" max="4" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Job Level (1–5)</label>
+            <input class="form-control" type="number" name="JobLevel" min="1" max="5" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Job Role</label>
+            <select class="form-control" name="JobRole" required>
+                <option disabled selected value="">Select Role</option>
+                <option value="Sales Executive">Sales Executive</option>
+                <option value="Research Scientist">Research Scientist</option>
+                <option value="Laboratory Technician">Laboratory Technician</option>
+                <option value="Manufacturing Director">Manufacturing Director</option>
+                <option value="Healthcare Representative">Healthcare Representative</option>
+                <option value="Manager">Manager</option>
+                <option value="Sales Representative">Sales Representative</option>
+                <option value="Research Director">Research Director</option>
+                <option value="Human Resources">Human Resources</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Job Satisfaction (1–4)</label>
+            <input class="form-control" type="number" name="JobSatisfaction" min="1" max="4" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Marital Status</label>
+            <select class="form-control" name="MaritalStatus" required>
+                <option disabled selected value="">Select Status</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Monthly Income</label>
+            <input class="form-control" type="number" name="MonthlyIncome" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Monthly Rate</label>
+            <input class="form-control" type="number" name="MonthlyRate" required>
+        </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="form-column">
+        <div class="mb-3">
+            <label class="form-label">Number of Companies Worked</label>
+            <input class="form-control" type="number" name="NumCompaniesWorked" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Over 18</label>
+            <select class="form-control" name="Over18" required>
+                <option disabled selected value="">Select</option>
+                <option value="Y">Yes</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Over Time</label>
+            <select class="form-control" name="OverTime" required>
+                <option disabled selected value="">Select</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Percent Salary Hike</label>
+            <input class="form-control" type="number" name="PercentSalaryHike" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Performance Rating (1–4)</label>
+            <input class="form-control" type="number" name="PerformanceRating" min="1" max="4" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Relationship Satisfaction (1–4)</label>
+            <input class="form-control" type="number" name="RelationshipSatisfaction" min="1" max="4" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Standard Hours</label>
+            <input class="form-control" type="number" name="StandardHours" value="80" readonly required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Stock Option Level (0–3)</label>
+            <input class="form-control" type="number" name="StockOptionLevel" min="0" max="3" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Total Working Years</label>
+            <input class="form-control" type="number" name="TotalWorkingYears" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Training Times Last Year</label>
+            <input class="form-control" type="number" name="TrainingTimesLastYear" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Work Life Balance (1–4)</label>
+            <input class="form-control" type="number" name="WorkLifeBalance" min="1" max="4" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Years at Company</label>
+            <input class="form-control" type="number" name="YearsAtCompany" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Years in Current Role</label>
+            <input class="form-control" type="number" name="YearsInCurrentRole" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Years Since Last Promotion</label>
+            <input class="form-control" type="number" name="YearsSinceLastPromotion" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Years with Current Manager</label>
+            <input class="form-control" type="number" name="YearsWithCurrManager" required>
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="btn-container">
+        <input class="btn" type="submit" value="Predict Attrition" />
+    </div>
+</form>
+    <h2>Prediction: {{ prediction_text }}</h2>
+    </div>
+</body>
+</html>
